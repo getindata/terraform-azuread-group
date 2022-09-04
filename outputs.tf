@@ -1,6 +1,9 @@
-# Example output from the module
+output "group_id" {
+  value       = local.group_id
+  description = "ID of the group"
+}
 
-output "example_output" {
-  description = "Example output of the module"
-  value       = var.example_var
+output "group_name" {
+  value       = local.group_display_name
+  description = "Name of the group"
 }
