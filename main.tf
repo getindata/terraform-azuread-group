@@ -1,13 +1,14 @@
-# Example resource that outputs the input value and 
-# echoes it's base64 encoded version locally 
+resource "azuread_group" "this" {
+  count = module.this.enabled ? 1 : 0
 
-resource "null_resource" "output_input" {
+  display_name     = local.name_from_descriptor
+  security_enabled = true
+}
 
-  triggers = {
-    input = var.example_var
-  }
+resource "azurerm_role_assignment" "this" {
+  count = module.this.enabled ? length(var.role_assignments) : 0
 
-  provisioner "local-exec" {
-    command = "echo ${var.example_var} | base64"
-  }
+  principal_id         = local.group_id
+  scope                = var.role_assignments[count.index].scope
+  role_definition_name = var.role_assignments[count.index].role_name
 }
